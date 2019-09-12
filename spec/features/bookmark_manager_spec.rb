@@ -5,16 +5,16 @@ feature 'viewing bookmarks' do
     connection = PG.connect(dbname: 'bookmark_manager_test')
 
     Bookmark.add_new(
-      url: 'http://www.makersacademy.com',
-      title: 'Makers Academy'
+      'http://www.makersacademy.com',
+      'Makers Academy'
     )
     Bookmark.add_new(
-      url: 'http://www.google.com',
-      title: 'Google'
+      'http://www.google.com',
+      'Google'
     )
     Bookmark.add_new(
-      url: 'http://www.destroyallsoftware.com',
-      title: 'Destroy All Software'
+      'http://www.destroyallsoftware.com',
+      'Destroy All Software'
     )
   
     visit '/bookmarks'
@@ -44,3 +44,14 @@ feature 'adding bookmarks' do
     expect(page).to have_link('BBC', href: 'http://www.bbc.co.uk')
   end
 end
+
+feature 'deleting bookmarks' do
+  scenario 'delete a new bookmark' do
+    Bookmark.add_new('http://www.makersacademy.com', 'Makers Academy')
+    visit '/'
+    click_button 'View Bookmarks'
+    first('.bookmark').click_button 'Delete'
+    expect(page).not_to have_link('Makers Academy', href: 'http://www.makersacademy.com')
+  end
+end
+

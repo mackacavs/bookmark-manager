@@ -8,12 +8,11 @@ class Bookmark
     @title = title
     @url = url
   end
-
+  
   def self.all
-    connection = connect
-    result = connection.exec("SELECT * FROM bookmarks;")
+    result = self.connect.exec("SELECT * FROM bookmarks;")
     result.map do |bookmark|
-      Bookmark.new(
+    Bookmark.new(
         id: bookmark['id'],
         title: bookmark['title'],
         url: bookmark['url']
@@ -21,19 +20,13 @@ class Bookmark
     end
   end
 
-  def self.add_new(url:, title:)
-    connection = connect
-    result = connection.exec <<-EOF
-      INSERT INTO bookmarks (url, title)
-      VALUES('#{url}', '#{title}')
-      RETURNING id, url, title;
-    EOF
+  def self.add_new(url, title)
+    result = connect.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}', '#{url}') RETURNING id, url, title")
+    Bookmark.new(id: result[0]['id'], title: result[0]['title'], url: result[0]['url'])
+  end
 
-    Bookmark.new(
-      id: result[0]['id'],
-      title: result[0]['title'],
-      url: result[0]['url']
-    )
+  def self.delete(id)
+    self.connect.exec("DELETE FROM bookmarks WHERE id = '#{id}'")
   end
 
   private_class_method
