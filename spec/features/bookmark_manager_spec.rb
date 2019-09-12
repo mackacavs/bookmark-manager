@@ -58,10 +58,17 @@ feature 'update bookmarks' do
     create_test_rows
     visit '/bookmarks'
     first('.bookmark').click_button 'Update'
-    fill_in 'title', with: 'Makers
-    # fill_in 'url', with: 'http://www.makersacademy.com'
+    fill_in 'title', with: 'Makers'
     click_button 'Submit'
-    # save_and_open_page
-    expect(page).to have_link('Makers')
+    expect(page).to have_link('Makers', href: 'http://www.makersacademy.com')
+  end
+
+  scenario 'change url' do
+    create_test_rows
+    visit '/bookmarks'
+    first('.bookmark').click_button 'Update'
+    fill_in 'url', with: 'http://www.makersacademy.co.uk'
+    click_button 'Submit'
+    expect(page).to have_link('Makers Academy', href: 'http://www.makersacademy.co.uk')
   end
 end

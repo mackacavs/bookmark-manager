@@ -30,9 +30,9 @@ describe Bookmark do
     it 'updates a bookmark' do
       bookmark = Bookmark.add_new("http://www.makersacademy.com", "Makers Academy")
       new_title = 'Makers'
-      Bookmark.update(bookmark.id,new_title, bookmark.url)
-      bookmark = Bookmark.all(bookmark.id)
-      expect(bookmark[0].title).to eq 'Makers'
+      Bookmark.update(bookmark.id, new_title, bookmark.url)
+      bookmark = Bookmark.find(bookmark.id)
+      expect(bookmark.title).to eq 'Makers'
     end
   end
 end
