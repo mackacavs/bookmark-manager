@@ -59,3 +59,14 @@ feature 'update bookmarks' do
     expect(page).to have_link('Makers Academy', href: 'http://www.makersacademy.co.uk')
   end
 end
+
+feature 'validate' do
+  scenario 'enter incorrect url' do
+    visit '/'
+    click_button 'Add New'
+    fill_in 'url', with: 'htt//www.bbd.co.uk'
+    fill_in 'title', with: 'BBC'
+    click_button 'Submit'
+    expect(page).to have_content('Please enter valid URL!')
+  end
+end

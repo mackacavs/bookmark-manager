@@ -22,6 +22,10 @@ I want to delete a bookmark.
 As a user
 So that I can edit a bookmark within Bookmark manager
 I want to update a bookmarks
+
+As a User
+So that I know that my bookmarks will work
+I want a message if I enter an invalid url
 ```
 
 ![User Story 1](public/User story 1.png)

@@ -37,3 +37,10 @@ describe Bookmark do
     end
   end
 end
+
+ describe 'self.valid' do
+   it 'validates a url' do
+     expect(Bookmark.valid('htttp://ww.bbc.co.uk')).to be(false)
+       expect(Bookmark.valid('http://www.bbc.co.uk')).to be(true)
+   end
+ end

@@ -1,4 +1,5 @@
 require_relative 'database_connection'
+require 'uri'
 
 class Bookmark
   attr_reader :id, :title, :url
@@ -41,6 +42,10 @@ class Bookmark
                         WHERE id = '#{id}'
                         RETURNING id, url, title;")
     create_bookmark_from(result)
+  end
+
+  def self.valid(url)
+    url =~ /\A#{URI::regexp(['http', 'https'])}\z/ ? true : false
   end
 
   private_class_method
