@@ -2,8 +2,6 @@ require 'pg'
 
 feature 'viewing bookmarks' do
   scenario 'displays bookmarks' do
-    connection = PG.connect(dbname: 'bookmark_manager_test')
-
     Bookmark.add_new(
       'http://www.makersacademy.com',
       'Makers Academy'
@@ -16,7 +14,7 @@ feature 'viewing bookmarks' do
       'http://www.destroyallsoftware.com',
       'Destroy All Software'
     )
-  
+
     visit '/bookmarks'
     expect(page).to have_link(
       'Makers Academy',
@@ -55,3 +53,15 @@ feature 'deleting bookmarks' do
   end
 end
 
+feature 'update bookmarks' do
+  scenario 'change title' do
+    create_test_rows
+    visit '/bookmarks'
+    first('.bookmark').click_button 'Update'
+    fill_in 'title', with: 'Makers
+    # fill_in 'url', with: 'http://www.makersacademy.com'
+    click_button 'Submit'
+    # save_and_open_page
+    expect(page).to have_link('Makers')
+  end
+end

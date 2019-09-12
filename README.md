@@ -18,6 +18,10 @@ I'd like to add a bookmark to my bookmark manager.
 As a user
 So I can remove my bookmark from Bookmark Manager
 I want to delete a bookmark.
+
+As a user
+So that I can edit a bookmark within Bookmark manager
+I want to update a bookmarks
 ```
 
 ![User Story 1](public/User story 1.png)
