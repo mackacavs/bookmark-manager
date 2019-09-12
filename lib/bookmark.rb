@@ -1,4 +1,4 @@
-require 'pg'
+require_relative 'database_connection'
 
 class Bookmark
   attr_reader :id, :title, :url
@@ -10,7 +10,7 @@ class Bookmark
   end
 
   def self.all
-    result = self.connect.exec("SELECT * FROM bookmarks;")
+    result = DatabaseConnection.query("SELECT * FROM bookmarks;")
     result.map do |bookmark|
     Bookmark.new(
         id: bookmark['id'],
@@ -21,33 +21,32 @@ class Bookmark
   end
 
   def self.find(id)
-    result = self.connect.exec("SELECT * FROM bookmarks WHERE id = '#{id}';")
-    Bookmark.new(id: result[0]['id'], title: result[0]['title'], url: result[0]['url'])
+    result = DatabaseConnection.query("SELECT * FROM bookmarks WHERE id = '#{id}';")
+    create_bookmark_from(result)
   end
 
   def self.add_new(url, title)
-    result = connect.exec("INSERT INTO bookmarks (title, url) VALUES('#{title}', '#{url}') RETURNING id, url, title")
-    Bookmark.new(id: result[0]['id'], title: result[0]['title'], url: result[0]['url'])
+    result = DatabaseConnection.query("INSERT INTO bookmarks (title, url) VALUES('#{title}', '#{url}') RETURNING id, url, title")
+    create_bookmark_from(result)
   end
 
   def self.delete(id)
-    connect.exec("DELETE FROM bookmarks WHERE id = '#{id}'")
+    DatabaseConnection.query("DELETE FROM bookmarks WHERE id = '#{id}'")
   end
 
   def self.update(id, new_title, new_url)
-    result = connect.exec("UPDATE bookmarks SET
+    result = DatabaseConnection.query("UPDATE bookmarks SET
                         title = '#{new_title}',
                         url = '#{new_url}'
                         WHERE id = '#{id}'
                         RETURNING id, url, title;")
-    Bookmark.new(id: result[0]['id'], title: result[0]['title'], url: result[0]['url'])
-
+    create_bookmark_from(result)
   end
 
   private_class_method
 
-  def self.connect
-    return PG.connect(dbname: 'bookmark_manager_test') if ENV['ENVIRONMENT'] == 'test'
-    PG.connect(dbname: 'bookmark_manager')
+  def self.create_bookmark_from(db_result)
+    Bookmark.new(id: db_result[0]['id'], title: db_result[0]['title'], url: db_result[0]['url'])
   end
+
 end

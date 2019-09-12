@@ -1,4 +1,5 @@
 require 'bookmark'
+require_relative '../database_connection_setup'
 
 describe Bookmark do
   describe '.all' do

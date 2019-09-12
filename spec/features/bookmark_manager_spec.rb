@@ -1,19 +1,6 @@
-require 'pg'
-
 feature 'viewing bookmarks' do
   scenario 'displays bookmarks' do
-    Bookmark.add_new(
-      'http://www.makersacademy.com',
-      'Makers Academy'
-    )
-    Bookmark.add_new(
-      'http://www.google.com',
-      'Google'
-    )
-    Bookmark.add_new(
-      'http://www.destroyallsoftware.com',
-      'Destroy All Software'
-    )
+    create_test_rows
 
     visit '/bookmarks'
     expect(page).to have_link(

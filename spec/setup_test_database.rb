@@ -1,8 +1,9 @@
 require 'pg'
 
 def truncate_table
-  connection = PG.connect(dbname: 'bookmark_manager_test')
-  connection.exec("TRUNCATE TABLE bookmarks;")
+  # connection = PG.connect(dbname: 'bookmark_manager_test')
+  DatabaseConnection.query("TRUNCATE TABLE bookmarks;")
+
 end
 
 def create_test_rows
